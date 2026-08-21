@@ -20,7 +20,13 @@ The approved Version 1 strategy is intentionally conservative and operationally 
 - AI Decision Support remains a separately deployable supporting component.
 - The Experience Layer is a composition layer built from Angular and a GraphQL BFF.
 
-Manufacturing Core is a single independently deployable modular monolith. It contains multiple internal modules with explicit ownership, domain invariants, and internal boundaries, but those modules are not separate Version 1 microservices.
+Manufacturing Core is one independently deployable application/service implemented as a modular monolith.
+
+Its internal modules are logical/domain boundaries inside the same Version 1 deployable.
+
+The internal modules are not independently deployable Version 1 microservices.
+
+Co-location does not permit modules to bypass business ownership, domain terminology, invariants, or internal boundaries.
 
 This strategy preserves strong manufacturing ownership while avoiding a distributed monolith that would result from splitting every manufacturing domain into its own service too early.
 
@@ -28,7 +34,7 @@ This strategy preserves strong manufacturing ownership while avoiding a distribu
 
 The approved Version 1 classification is:
 
-- Manufacturing Core: Independent business service (modular monolith)
+- Manufacturing Core: one independent business service (modular monolith)
 - Inventory Service: Independent business service
 - Industrial Operations Service: Independent business service
 - Operational Analytics: Supporting independently deployable component
@@ -38,10 +44,10 @@ The approved Version 1 classification is:
 The following are not separate Version 1 business services:
 - Product & Manufacturing Definition
 - Manufacturing Engineering
-- Production Planning & Scheduling
+- Planning & Scheduling
 - Production Execution
 - Quality
-- Manufacturing Genealogy & Traceability
+- Genealogy
 - Asset & Maintenance
 
 Those domains remain internal modules inside Manufacturing Core in Version 1.
@@ -55,10 +61,10 @@ Manufacturing Core is the Version 1 business service responsible for the authori
 It contains the following internal modules:
 - Product & Manufacturing Definition
 - Manufacturing Engineering
-- Production Planning & Scheduling
+- Planning & Scheduling
 - Production Execution
 - Quality
-- Manufacturing Genealogy & Traceability
+- Genealogy
 - Asset & Maintenance
 
 ### WHY
@@ -98,7 +104,7 @@ Manufacturing Core communicates with other business services and supporting comp
 
 ### V1 OR FUTURE
 
-Manufacturing Core is an independently deployable service in Version 1.
+Manufacturing Core is one independently deployable application/service in Version 1.
 
 Internal modules may evolve into separate services in future versions only when clear business and operational reasons emerge, such as a materially separate planning domain, a heavily independent traceability capability, or a distinct engineering/maintenance operating model.
 
@@ -116,7 +122,7 @@ Owns product identity, revision, material definitions, BOMs, routing, and manufa
 
 Owns engineering changes, process design, product-effectivity rules, and manufacturing standards. This module governs the engineering intent that Manufacturing Core executes.
 
-#### Production Planning & Scheduling
+#### Planning & Scheduling
 
 Owns the scheduling model, production demand alignment, work sequencing, and plant-level planning logic. It coordinates production intent within the Manufacturing Core while remaining internal to that service in Version 1.
 
@@ -128,7 +134,7 @@ Owns actual execution of work orders, WIP state, completion events, material con
 
 Owns formal quality holds, disposition decisions, inspections, defect handling, non-conformance actions, and release decisions. Quality remains a module inside Manufacturing Core, with formal authority over quality state in Version 1.
 
-#### Manufacturing Genealogy & Traceability
+#### Genealogy
 
 Owns manufacturing trace relationships across lots, components, and product lineage. It maintains the manufacturing history needed to connect material, process, and output lineage within the production model.
 
